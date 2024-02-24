@@ -17,7 +17,11 @@
         <tr>
               <td>{{ item.item_name }}</td>
               <td>{{ item.item_notes }}</td>
-              <td>{{ item.item_completed }}</td>
+              <td>
+
+                <input type="checkbox" id="item_date_completed_{{ item._id }}" name="item_date_completed" {%if item.item_completed  %} checked="checked" {% endif %} value="" onclick="myFunction({{ item._id }})">
+
+              </td>
               <td>{{ item.item_date_entered }}</td>
               <td>{{ item.item_date_completed }}</td>
               <td><a href="add-new-item-form?_id={{ item._id }}">Edit</a></td>
@@ -30,4 +34,18 @@
       </tbody>
   </table>
 </div>
+
+<script type="text/javascript">
+  function myFunction(id){
+    var checkBox = document.getElementById("item_date_completed_" + id);
+    if (checkBox.checked == true){
+      window.location.href = "/toggle-completed?_id=" + id + "&checked=true"
+
+    } else {
+      window.location.href = "/toggle-completed?_id=" + id + "&checked=false"
+    }
+  }
+
+</script>
+
 {% endblock %}

@@ -39,21 +39,23 @@ def add_new_item():
     return redirect("/")
 
 
-
-# @app.route('/edit-new-item', methods = ['GET', 'POST'])
-# def add_new_item():
-#     form_data = request.form.to_dict(flat=False)
-#     item = Item(form_data)
-#     db.session.add(item)
-#     db.session.commit()
-#     return redirect("/")
-
-
 @app.route('/delete-item', methods = ['GET'])
 def delete_item():
     args = request.args
-    print(f"ARGGRRSSSSS:{args}")
-    print(f"args:{args}")
     Item.query.filter_by(_id=args.get("_id")).delete()
+    db.session.commit()
+    return redirect("/")
+
+
+@app.route('/toggle-completed', methods = ['GET'])
+def toggle_completed():
+    id = request.args.get('_id')
+    item=Item.query.get(id)
+    checked = request.args.get('checked')
+
+    if checked == "true":
+        item.item_completed = True
+    else:
+        item.item_completed = False
     db.session.commit()
     return redirect("/")
