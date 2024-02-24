@@ -1,0 +1,33 @@
+{% extends 'base-template.html' %}
+{% block content %}
+<div class="container">
+  <table class="table">
+    <thread>
+        <tr>
+          <th>Name</th>
+          <th>Notes</th>
+          <th>Completed</th>
+          <th>Date Entered</th>
+          <th>Date Completed</th>
+          <th>...</th>
+        </tr>
+      </thread>
+      <tbody>
+      {% for item in items %}
+        <tr>
+              <td>{{ item.item_name }}</td>
+              <td>{{ item.item_notes }}</td>
+              <td>{{ item.item_completed }}</td>
+              <td>{{ item.item_date_entered }}</td>
+              <td>{{ item.item_date_completed }}</td>
+              <td><a href="add-new-item-form?_id={{ item._id }}">Edit</a></td>
+              <td><a href="delete-item?_id={{ item._id }}">Delete</a></td>
+
+
+        </tr>
+
+        {% endfor %}
+      </tbody>
+  </table>
+</div>
+{% endblock %}
