@@ -10,7 +10,7 @@ import datetime
 
 @app.route('/')
 def index():
-    return render_template('show_items.html', items=Item.query.all())
+    return render_template('show_items.html', items=Item.query.order_by(Item.item_priority).all())
 
 
 
@@ -59,3 +59,28 @@ def toggle_completed():
         item.item_completed = False
     db.session.commit()
     return redirect("/")
+
+
+
+@app.route('/change-item-priority-up', methods = ['GET'])
+def change_item_priority_up():
+    item_id = request.args.get('_id', type=int)
+
+    item_to_move = Item.query.get(item_id)
+    item_to_swap = Item.query.get(item_id - 1)
+    if item_to_move and item_to_swap:
+        item_to_move.item_priority, item_to_swap.item_priority = item_to_swap.item_priority, item_to_move.item_priority
+        db.session.commit()
+    return redirect(url_for('index'))
+
+
+@app.route('/change-item-priority-down', methods = ['GET'])
+def change_item_priority_down():
+    item_id = request.args.get('_id', type=int)
+
+    item_to_move = Item.query.get(item_id)
+    item_to_swap = Item.query.get(item_id + 1)
+    if item_to_move and item_to_swap:
+        item_to_move.item_priority, item_to_swap.item_priority = item_to_swap.item_priority, item_to_move.item_priority
+        db.session.commit()
+    return redirect(url_for('index'))
